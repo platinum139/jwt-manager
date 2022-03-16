@@ -76,6 +76,10 @@ func (manager JwtManager) SaveRefreshToken(userId, token string) error {
     return manager.redisClient.StoreToken(userId, token)
 }
 
+func (manager JwtManager) DeleteRefreshToken(userId, token string) error {
+    return manager.redisClient.DeleteToken(userId, token)
+}
+
 func NewJwtManager(ctx context.Context, log *log.Logger, config Config) *JwtManager {
     redisClient := rds.NewRedisManager(ctx, log, &config.Redis)
     return &JwtManager{
