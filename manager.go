@@ -5,7 +5,6 @@ import (
     "encoding/base64"
     "log"
     "math/rand"
-    "strconv"
     "strings"
     "time"
 
@@ -31,9 +30,9 @@ type JwtManager struct {
     redisClient *rds.Manager
 }
 
-func (manager JwtManager) GenerateAccessToken(userID uint) (string, error) {
+func (manager JwtManager) GenerateAccessToken(userID string) (string, error) {
     token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-        Subject:   strconv.Itoa(int(userID)),
+        Subject:   userID,
         ExpiresAt: time.Now().Add(time.Duration(manager.config.Jwt.AccessTokenMin) * time.Minute).Unix(),
     })
     return token.SignedString([]byte(manager.config.Jwt.SecretKey))
