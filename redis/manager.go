@@ -28,13 +28,13 @@ func (manager *Manager) StoreToken(userId, token string) error {
 func (manager *Manager) TokenExists(userId, token string) (bool, error) {
     key := fmt.Sprintf("refresh:%s:%s", userId, token)
     err := manager.client.Get(manager.ctx, key).Err()
-    if err != nil {
-        return true, nil
-    }
     if err == redis.Nil {
         return false, nil
     }
-    return false, err
+    if err != nil {
+        return false, err
+    }
+    return true, nil
 }
 
 func (manager *Manager) DeleteToken(userId, token string) error {
