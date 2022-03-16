@@ -20,9 +20,9 @@ type Manager struct {
     client *redis.Client
 }
 
-func (manager *Manager) StoreToken(userId, token string) error {
+func (manager *Manager) StoreToken(userId, token string, ttl int) error {
     key := fmt.Sprintf("refresh:%s:%s", userId, token)
-    return manager.client.Set(manager.ctx, key, 0, 72*time.Hour).Err()
+    return manager.client.Set(manager.ctx, key, 0, time.Duration(ttl)*time.Minute).Err()
 }
 
 func (manager *Manager) TokenExists(userId, token string) (bool, error) {

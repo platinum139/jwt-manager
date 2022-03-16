@@ -73,7 +73,7 @@ func (manager JwtManager) ValidateRefreshToken(userId, token string) (bool, erro
 }
 
 func (manager JwtManager) SaveRefreshToken(userId, token string) error {
-    return manager.redisClient.StoreToken(userId, token)
+    return manager.redisClient.StoreToken(userId, token, manager.config.Jwt.RefreshTokenMin)
 }
 
 func (manager JwtManager) DeleteRefreshToken(userId, token string) error {
